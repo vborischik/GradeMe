@@ -7,6 +7,11 @@ public class Question {
         this.question = question;
         this.options = options;
         this.answer = answer;
+
+
+
+
+
     }
 
     public String getQuestion() { return question; }
