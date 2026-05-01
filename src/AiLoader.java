@@ -22,7 +22,7 @@ public class AiLoader implements DataLoader<Question> {
     private String callApi(String topic) throws Exception {
 
         String prompt = """
-Generate 5 pro level multiple-choice questions about java.
+Generate 5 intermediate level multiple-choice questions about java.
 
 Return ONLY JSON:
 [
@@ -35,13 +35,17 @@ Return ONLY JSON:
 """.formatted(topic);
 
         JSONObject body = new JSONObject()
-                .put("model", "google/gemma-2-2b-it")
+                .put("model", "qwen/qwen3.5-122b-a10b")
                 .put("messages", new JSONArray()
                         .put(new JSONObject()
                                 .put("role", "user")
                                 .put("content", prompt)))
-                .put("temperature", 0.2)
-                .put("stream", false);
+                .put("max_tokens", 16384)
+                .put("temperature", 1.0)
+                .put("top_p", 0.95)
+                .put("stream", false)
+                .put("chat_template_kwargs", new JSONObject()
+                        .put("enable_thinking", false));
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://integrate.api.nvidia.com/v1/chat/completions"))
